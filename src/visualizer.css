@@ -33,6 +33,72 @@
   box-shadow: 0 0 30px rgba(88, 103, 221, 0.2);
 }
 
+/* Speed Control Styles */
+.speed-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0;
+  padding: 8px 15px;
+  background: rgba(26, 32, 44, 0.5);
+  border-radius: 20px;
+  backdrop-filter: blur(5px);
+}
+
+.speed-control label {
+  color: #e2e8f0;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.speed-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 120px;
+  height: 4px;
+  background: rgba(79, 209, 197, 0.3);
+  border-radius: 2px;
+  outline: none;
+}
+
+.speed-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #4fd1c5;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.speed-slider::-webkit-slider-thumb:hover {
+  background: #38b2ac;
+  transform: scale(1.1);
+}
+
+.speed-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: #4fd1c5;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.speed-slider::-moz-range-thumb:hover {
+  background: #38b2ac;
+  transform: scale(1.1);
+}
+
+.speed-value {
+  color: #4fd1c5;
+  font-size: 14px;
+  min-width: 35px;
+  text-align: left;
+}
+
 /* Custom scrollbar styles */
 .electron-visualizer::-webkit-scrollbar {
   width: 8px;

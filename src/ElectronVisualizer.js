@@ -1,9 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './visualizer.css';
 
 const ElectronVisualizer = ({ electronConfiguration }) => {
   const canvasRef = useRef(null);
   const animationRef = useRef(null);
+  const [speedFactor, setSpeedFactor] = useState(1);
 
   useEffect(() => {
     if (!electronConfiguration) return;
@@ -116,7 +117,7 @@ const ElectronVisualizer = ({ electronConfiguration }) => {
       const centerX = canvas.width / 2;
       const centerY = canvas.height / 2;
       
-      // Base speed factor (increased for faster animation)
+      // Base speed factor (adjusted by the speed control)
       const baseSpeed = 0.06;
       
       // Process each shell
@@ -127,7 +128,7 @@ const ElectronVisualizer = ({ electronConfiguration }) => {
         
         // Calculate speed inversely proportional to shell number
         // v ∝ 1/n where n is the shell number
-        const speed = baseSpeed / shell;
+        const speed = (baseSpeed / shell) * speedFactor;
         
         // Position electrons evenly around the orbit
         shellElectrons.forEach((electron, index) => {
@@ -150,7 +151,7 @@ const ElectronVisualizer = ({ electronConfiguration }) => {
       
       return electrons;
     };
-    
+
     // Draw orbits
     const drawOrbits = () => {
       const centerX = canvas.width / 2;
@@ -198,10 +199,10 @@ const ElectronVisualizer = ({ electronConfiguration }) => {
       });
     };
     
-    // Animation loop
-    const electrons = createElectrons();
+    // Animation function
+    let electrons = createElectrons();
     
-    const animate = (time) => {
+    const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
       drawOrbits();
@@ -211,35 +212,48 @@ const ElectronVisualizer = ({ electronConfiguration }) => {
       animationRef.current = requestAnimationFrame(animate);
     };
     
-    animationRef.current = requestAnimationFrame(animate);
+    animate();
     
-    // Cleanup
     return () => {
       window.removeEventListener('resize', setCanvasSize);
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [electronConfiguration]);
+  }, [electronConfiguration, speedFactor]);
 
   return (
     <div className="electron-visualizer">
       <canvas ref={canvasRef}></canvas>
+      <div className="speed-control">
+        <label htmlFor="speed-slider">Animation Speed:</label>
+        <input
+          id="speed-slider"
+          type="range"
+          min="0.1"
+          max="4"
+          step="0.1"
+          value={speedFactor}
+          onChange={(e) => setSpeedFactor(parseFloat(e.target.value))}
+          className="speed-slider"
+        />
+        <span className="speed-value">{speedFactor.toFixed(1)}x</span>
+      </div>
       <div className="orbital-legend">
         <div className="legend-item">
-          <span className="color-dot s"></span>
+          <span className="color-dot" style={{ backgroundColor: '#ff4d4d' }}></span>
           <span>s</span>
         </div>
         <div className="legend-item">
-          <span className="color-dot p"></span>
+          <span className="color-dot" style={{ backgroundColor: '#4dff4d' }}></span>
           <span>p</span>
         </div>
         <div className="legend-item">
-          <span className="color-dot d"></span>
+          <span className="color-dot" style={{ backgroundColor: '#4d4dff' }}></span>
           <span>d</span>
         </div>
         <div className="legend-item">
-          <span className="color-dot f"></span>
+          <span className="color-dot" style={{ backgroundColor: '#ffff4d' }}></span>
           <span>f</span>
         </div>
       </div>

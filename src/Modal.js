@@ -85,7 +85,7 @@ const Modal = ({ element, onClose }) => {
           </div>
 
           <div className="modal-right">
-            <h3 className="visualizer-title">Electrons Revolution</h3>
+            <h3 className="visualizer-title">Bohr's model of {element.name}</h3>
             <ElectronVisualizer electronConfiguration={element.fullElectronicConfiguration} />
             <button className="close-button" onClick={onClose}>Close</button>
           </div>
